@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "mytimeseries"
+version = "0.1.0"
+description = "A Python package that defines time series of several information."
+authors = ["oliverrudow <oliver.rudow@googlemail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.14"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
