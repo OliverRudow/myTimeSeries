@@ -1,6 +1,6 @@
-"""myTableSQLSectorsTimeSeries.py."""
+"""myTableSQLIndustriesTimeSeries.py."""
 
-__title__: str = "myTableSQLSectorsTimeSeries.py"
+__title__: str = "myTableSQLIndustriesTimeSeries.py"
 __version__: str = "0.1.0"
 __author__: str = "Oliver Rudow"
 __copyright__: str = "Copyright 2026, Brain Center Höfen"
@@ -11,11 +11,11 @@ __copyright__: str = "Copyright 2026, Brain Center Höfen"
 import dataclasses
 import sqlite3
 from mydatabase import mySQLDataBase, myTableSQL
-from mytimeseries import mySectorsTimeSeriesDefinitions
+from mytimeseries import myIndustriesTimeSeriesDefinitions
 
 
 @dataclasses.dataclass(init=False)
-class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
+class MyTableSQLIndustriesTimeSeries(myTableSQL.MyTableSQL):
     """
         Class for providing variables and functions to manage the Web Shop List.
         The Class is based on SQLite3.
@@ -26,22 +26,22 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
     _dict_table_settings: dict[str, tuple] = dataclasses.field(repr=False, default=dict[str, tuple])
 
     # column indices
-    _int_sectors_time_series_sector_name_column_index: int = dataclasses.field(repr=False, default=0)
-    _int_sectors_time_series_quote_numbers_column_index: int = dataclasses.field(repr=False, default=0)
-    _int_sectors_time_series_change_percent_column_index: int = dataclasses.field(repr=False, default=0)
-    _int_sectors_time_series_twenty_day_change_percent_json_array_column_index: int = dataclasses.field(repr=False,
+    _int_industries_time_series_industries_name_column_index: int = dataclasses.field(repr=False, default=0)
+    _int_industries_time_series_quote_numbers_column_index: int = dataclasses.field(repr=False, default=0)
+    _int_industries_time_series_change_percent_column_index: int = dataclasses.field(repr=False, default=0)
+    _int_industries_time_series_twenty_day_change_percent_json_array_column_index: int = dataclasses.field(repr=False,
                                                                                                          default=0)
     # column names
-    _str_sectors_time_series_sector_name_column_name: str = dataclasses.field(repr=False, default='')
-    _str_sectors_time_series_quote_numbers_column_name: str = dataclasses.field(repr=False, default='')
-    _str_sectors_time_series_change_percent_column_name: str = dataclasses.field(repr=False, default='')
-    _str_sectors_time_series_twenty_day_change_percent_json_array_column_name: str = dataclasses.field(repr=False,
+    _str_industries_time_series_industries_name_column_name: str = dataclasses.field(repr=False, default='')
+    _str_industries_time_series_quote_numbers_column_name: str = dataclasses.field(repr=False, default='')
+    _str_industries_time_series_change_percent_column_name: str = dataclasses.field(repr=False, default='')
+    _str_industries_time_series_twenty_day_change_percent_json_array_column_name: str = dataclasses.field(repr=False,
                                                                                                         default='')
     # value
-    _str_sectors_time_series_sector_name_value: str = dataclasses.field(repr=False, default='')
-    _int_sectors_time_series_quote_numbers_value: int | str = dataclasses.field(repr=False, default='')
-    _float_sectors_time_series_change_percent_value: float | str = dataclasses.field(repr=False, default='')
-    _b_sectors_time_series_twenty_day_change_percent_json_array_credit_value: bytes | str = dataclasses.field(
+    _str_industries_time_series_industries_name_value: str = dataclasses.field(repr=False, default='')
+    _int_industries_time_series_quote_numbers_value: int | str = dataclasses.field(repr=False, default='')
+    _float_industries_time_series_change_percent_value: float | str = dataclasses.field(repr=False, default='')
+    _b_industries_time_series_twenty_day_change_percent_json_array_credit_value: bytes | str = dataclasses.field(
         repr=False,
         default='')
 
@@ -52,31 +52,31 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
         self._dict_table_settings = {}
 
         # SQL Data Base Scheme
-        self.set_sql_data_base_schema(mySectorsTimeSeriesDefinitions.STR_DATA_BASE_SCHEMA_NAME)
+        self.set_sql_data_base_schema(myIndustriesTimeSeriesDefinitions.STR_DATA_BASE_SCHEMA_NAME)
 
         # SQL Table Name
-        self.set_table_name(mySectorsTimeSeriesDefinitions.STR_DATA_BASE_TABLE_NAME)
+        self.set_table_name(myIndustriesTimeSeriesDefinitions.STR_DATA_BASE_TABLE_NAME)
 
         # column sectors name
-        my_special_tuple = mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_SECTORS
+        my_special_tuple = myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_INDUSTRIES
 
         self._dict_table_settings[my_special_tuple[self._index_tuple.OPTION_NAME]] = (
             my_special_tuple)[self._index_tuple.DATA_CONTENT]
 
         # column quote numbers
-        my_special_tuple = mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_QUOTE_NUMBERS
+        my_special_tuple =myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_QUOTE_NUMBERS
 
         self._dict_table_settings[my_special_tuple[self._index_tuple.OPTION_NAME]] = (
             my_special_tuple)[self._index_tuple.DATA_CONTENT]
 
         # column quote numbers
-        my_special_tuple = mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_CHANGE_PERCENT
+        my_special_tuple = myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_CHANGE_PERCENT
 
         self._dict_table_settings[my_special_tuple[self._index_tuple.OPTION_NAME]] = (
             my_special_tuple)[self._index_tuple.DATA_CONTENT]
 
         # column json array
-        my_special_tuple = mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY
+        my_special_tuple = myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY
 
         self._dict_table_settings.update(
             {my_special_tuple[self._index_tuple.OPTION_NAME]: my_special_tuple[
@@ -87,7 +87,7 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
 
         # check Watch exists
         self._str_some_table_column_name = self.get_column_name_from_dict(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_SECTORS)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_INDUSTRIES)
 
         self._bool_sql_data_base_table = (self.check_sql_data_base_table_exists() and
                                       self.check_sql_data_base_table_column_name(self._str_some_table_column_name) and
@@ -102,35 +102,35 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
     def _init_static_watch_list_columns(self) -> None:
 
         self._str_sectors_time_series_sector_name_column_name = self.get_column_name_from_dict(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_SECTORS)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_INDUSTRIES)
 
         self._int_sectors_time_series_sector_name_column_index = self.get_column_index_from_list(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_SECTORS)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_INDUSTRIES)
 
         self._str_sectors_time_series_quote_numbers_column_name = self.get_column_name_from_dict(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_QUOTE_NUMBERS)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_QUOTE_NUMBERS)
 
         self._int_sectors_time_series_quote_numbers_column_index = self.get_column_index_from_list(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_QUOTE_NUMBERS)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_QUOTE_NUMBERS)
 
         self._str_sectors_time_series_change_percent_column_name = self.get_column_name_from_dict(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_CHANGE_PERCENT)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_CHANGE_PERCENT)
 
         self._int_sectors_time_series_change_percent_column_index = self.get_column_index_from_list(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_CHANGE_PERCENT)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_CHANGE_PERCENT)
 
         self._str_sectors_time_series_twenty_day_change_percent_json_array_column_name = self.get_column_name_from_dict(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY)
 
         self._int_sectors_time_series_twenty_day_change_percent_json_array_column_index = self.get_column_index_from_list(
-            mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY)
+            myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY)
 
-    def update_sectors(self, list_sectors: list[str]):
+    def update_industries(self, list_industries: list[str]):
 
         str_text = (f' INSERT OR IGNORE INTO {self._str_sql_schema}.{self._str_table_name} '
-                    f'({self._str_sectors_time_series_sector_name_column_name}) VALUES (?) ')
+                    f'({self._str_industries_time_series_industries_name_column_name}) VALUES (?) ')
 
-        data = [(sector,) for sector in list_sectors]
+        data = [(industry,) for industry in list_industries]
 
         if self._my_sql_connection and self._my_sql_cursor:
 
@@ -144,7 +144,7 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
 
                 print(
                     f'---- Operational Error in {__title__}, '
-                    f'{self.update_sectors.__name__} ----, \n'
+                    f'{self.update_industries.__name__} ----, \n'
                     f'---- the Text {str_text} has caused an Error {err} ! ----')
 
                 exit(1)
@@ -152,10 +152,10 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
     def update_number_quotations(self, list_tuples: list[tuple[str, int]]):
 
         str_text = (f'UPDATE {self._str_sql_schema}.{self._str_table_name} '
-                    f'SET {self._str_sectors_time_series_quote_numbers_column_name} = ? '
-                    f'WHERE {self._str_sectors_time_series_sector_name_column_name} = ? ')
+                    f'SET {self._str_industries_time_series_quote_numbers_column_name} = ? '
+                    f'WHERE {self._str_industries_time_series_industries_name_column_name} = ? ')
 
-        data = [(num_quote, sector_name) for sector_name, num_quote in list_tuples]
+        data = [(num_quote, industry_name) for industry_name, num_quote in list_tuples]
 
 
         if self._my_sql_connection and self._my_sql_cursor:
@@ -177,10 +177,10 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
 
     def update_change_percent(self, list_change_percents: list[tuple]):
 
-        str_target_change_col = self._str_sectors_time_series_change_percent_column_name
-        str_target_array_col = self._str_sectors_time_series_twenty_day_change_percent_json_array_column_name
-        str_target_id = self._str_sectors_time_series_sector_name_column_name
-        num_array_fields = mySectorsTimeSeriesDefinitions.DATA_BASE_INT_NUMBER_PRECEDED_DATA
+        str_target_change_col = self._str_industries_time_series_change_percent_column_name
+        str_target_array_col = self._str_industries_time_series_twenty_day_change_percent_json_array_column_name
+        str_target_id = self._str_industries_time_series_industries_name_column_name
+        num_array_fields = myIndustriesTimeSeriesDefinitions.DATA_BASE_INT_NUMBER_PRECEDED_DATA
 
         # SQLite code is organized as follows:
         # 1. json_insert(..., '$[0]', new_value) insert value left (Index 0).
@@ -225,7 +225,7 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
 
     def get_global_average_change_percent(self) -> float:
 
-        _str_change_percent_col = self._str_sectors_time_series_change_percent_column_name
+        _str_change_percent_col = self._str_industries_time_series_change_percent_column_name
 
         _str_text = (f'SELECT '
                      f' ROUND(AVG({_str_change_percent_col}), 2) '
@@ -261,9 +261,9 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
 
         return _list_result
 
-    def get_global_sum_all_sectors(self) -> int:
+    def get_global_sum_all_industries(self) -> int:
 
-        _str_num_quotes_col = self._str_sectors_time_series_quote_numbers_column_name
+        _str_num_quotes_col = self._str_industries_time_series_quote_numbers_column_name
 
         _str_text = (f'SELECT '
                      f' SUM({_str_num_quotes_col}) '
@@ -284,7 +284,7 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
             except sqlite3.OperationalError as err:
 
                 print(
-                    f'---- Operational Error in {__title__}, {self.get_global_sum_all_sectors.__name__} ----, \n'
+                    f'---- Operational Error in {__title__}, {self.get_global_sum_all_industries.__name__} ----, \n'
                     f'---- the Text {_str_text} has caused an Error {err} ! ----')
 
                 exit(1)

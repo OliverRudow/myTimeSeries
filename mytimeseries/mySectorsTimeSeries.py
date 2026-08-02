@@ -32,7 +32,7 @@ class MySectorsTimeSeries(mySQLDataBase.MySQLDataBase):
 
     # SQL Table Static Watch List
     _my_table_sql_sectors_time_series: myTableSQLSectorsTimeSeries.MyTableSQLSectorsTimeSeries = (
-        dataclasses.field(repr=False, default=None))
+        dataclasses.field(repr=False, default_factory=type(myTableSQLSectorsTimeSeries.MyTableSQLSectorsTimeSeries)))
 
     # tuple indices
     _int_sectors_time_series_sector_name_column_index: int = dataclasses.field(repr=False, default=0)
@@ -45,15 +45,15 @@ class MySectorsTimeSeries(mySQLDataBase.MySQLDataBase):
     _str_sectors_time_series_change_percent_column_name: str = dataclasses.field(repr=False, default='')
     _str_sectors_time_series_twenty_day_change_percent_json_array_column_name: str = dataclasses.field(repr=False, default='')
 
-    _list_column_names: list = dataclasses.field(repr=False, default=list)
+    _list_column_names: list = dataclasses.field(repr=False, default_factory=list)
 
     _int_num_columns: int = dataclasses.field(repr=False, default=0)
 
-    _list_sectors_tuples: list[tuple[str, int]] = dataclasses.field(repr=False, default=list)
+    _list_sectors_tuples: list[tuple[str, int]] = dataclasses.field(repr=False, default_factory=list)
 
-    _list_change_percent_tuples: list[tuple] = dataclasses.field(repr=False, default=list)
+    _list_change_percent_tuples: list[tuple] = dataclasses.field(repr=False, default_factory=list)
 
-    _list_sectors: list = dataclasses.field(repr=False, default=list)
+    _list_sectors: list = dataclasses.field(repr=False, default_factory=list)
 
     _float_average_change_percent_all_sectors: float = dataclasses.field(repr=False, default=0)
 
@@ -171,8 +171,6 @@ class MySectorsTimeSeries(mySQLDataBase.MySQLDataBase):
     def get_table_data_plus_headline(self) -> list:
 
         headline = []
-
-        data = []
 
         if isinstance(self._my_table_sql_sectors_time_series.get_column_names(), list):
 

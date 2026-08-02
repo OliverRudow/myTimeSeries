@@ -1,6 +1,6 @@
 # myTimeSeries
 
-myTimeSeries is a package that holds the SQLite tables of several time series such as the quote secors change in percent over time.
+myTimeSeries is a package that holds the SQLite tables of several time series such as the quote sectors change in percent over time.
 
 # Installation
 
