@@ -93,36 +93,36 @@ class MyTableSQLIndustriesTimeSeries(myTableSQL.MyTableSQL):
                                       self.check_sql_data_base_table_column_name(self._str_some_table_column_name) and
                                       self.check_sql_data_base_table_is_not_empty())
 
-        self._init_static_watch_list_columns()
+        self._init_table_columns()
 
         if not self._bool_sql_data_base_table:
 
             self.create_sql_data_base_table()
 
-    def _init_static_watch_list_columns(self) -> None:
+    def _init_table_columns(self) -> None:
 
-        self._str_sectors_time_series_sector_name_column_name = self.get_column_name_from_dict(
+        self._str_industries_time_series_industries_name_column_name = self.get_column_name_from_dict(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_INDUSTRIES)
 
-        self._int_sectors_time_series_sector_name_column_index = self.get_column_index_from_list(
+        self._int_industries_time_series_industries_name_column_index = self.get_column_index_from_list(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_INDUSTRIES)
 
-        self._str_sectors_time_series_quote_numbers_column_name = self.get_column_name_from_dict(
+        self._str_industries_time_series_quote_numbers_column_name = self.get_column_name_from_dict(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_QUOTE_NUMBERS)
 
-        self._int_sectors_time_series_quote_numbers_column_index = self.get_column_index_from_list(
+        self._int_industries_time_series_quote_numbers_column_index = self.get_column_index_from_list(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_QUOTE_NUMBERS)
 
-        self._str_sectors_time_series_change_percent_column_name = self.get_column_name_from_dict(
+        self._str_industries_time_series_change_percent_column_name = self.get_column_name_from_dict(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_CHANGE_PERCENT)
 
-        self._int_sectors_time_series_change_percent_column_index = self.get_column_index_from_list(
+        self._int_industries_time_series_change_percent_column_index = self.get_column_index_from_list(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_CHANGE_PERCENT)
 
-        self._str_sectors_time_series_twenty_day_change_percent_json_array_column_name = self.get_column_name_from_dict(
+        self._str_industries_time_series_twenty_day_change_percent_json_array_column_name = self.get_column_name_from_dict(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY)
 
-        self._int_sectors_time_series_twenty_day_change_percent_json_array_column_index = self.get_column_index_from_list(
+        self._int_industries_time_series_twenty_day_change_percent_json_array_column_index = self.get_column_index_from_list(
             myIndustriesTimeSeriesDefinitions.TUPLE_INDUSTRIES_TIME_SERIES_TWENTY_DAY_CHANGE_PERCENT_JSON_ARRAY)
 
     def update_industries(self, list_industries: list[str]):

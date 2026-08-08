@@ -93,13 +93,13 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
                                       self.check_sql_data_base_table_column_name(self._str_some_table_column_name) and
                                       self.check_sql_data_base_table_is_not_empty())
 
-        self._init_static_watch_list_columns()
+        self._init_table_columns()
 
         if not self._bool_sql_data_base_table:
 
             self.create_sql_data_base_table()
 
-    def _init_static_watch_list_columns(self) -> None:
+    def _init_table_columns(self) -> None:
 
         self._str_sectors_time_series_sector_name_column_name = self.get_column_name_from_dict(
             mySectorsTimeSeriesDefinitions.TUPLE_SECTORS_TIME_SERIES_SECTORS)

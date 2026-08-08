@@ -16,6 +16,8 @@ from myfilebase import myFileBase
 from mytimeseries import myIndustriesTimeSeriesDefinitions, myIndustriesTimeSeries, myTableSQLUpdateManager
 from mytimeseries import mySectorsTimeSeries
 
+STR_TARGET_DIRECTORY_FOR_SAFETY_COPY: str = '/Users/oliverrudow/Library/Mobile Documents/com~apple~CloudDocs/PycharmProjects/Data'
+
 
 @dataclasses.dataclass(init=False)
 class MyTimeSeries(mySQLDataBase.MySQLDataBase):
@@ -27,6 +29,9 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
 
     # Data Base File Name
     _str_data_base_file_name: str = dataclasses.field(init=False, default_factory=str)
+
+    # Safety Directory
+    _str_target_directory_for_safety_copy: str = dataclasses.field(init=False, default_factory=str)
 
     # FileBase
     _my_file: myFileBase.MyFileBase = dataclasses.field(repr=False, default_factory=type(myFileBase.MyFileBase))
@@ -49,6 +54,8 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
     def __init__(self, str_working_directory: Optional[str] = None,
                  str_data_base_filename: Optional[str] = None) -> None:
         super().__init__()
+
+        self._str_target_directory_for_safety_copy = STR_TARGET_DIRECTORY_FOR_SAFETY_COPY
 
         # init FileBase w/o Config
         self._my_file = myFileBase.MyFileBase()
@@ -78,6 +85,8 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
             self._my_file.set_file_name(myIndustriesTimeSeriesDefinitions.STR_DATA_BASE_FILE_NAME)
 
             self._str_data_base_file_name = myIndustriesTimeSeriesDefinitions.STR_DATA_BASE_FILE_NAME
+
+        self._my_file.set_target_directory_for_copy(self._str_target_directory_for_safety_copy)
 
         # SQL Data Base Name
         self.set_sql_data_base_name(self._my_file.get_entire_file_name)
@@ -137,13 +146,15 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
 
         self._my_table_sql_update_manager.set_update_date()
 
-    def exit_time_series(self):
+    def close_time_series(self):
 
         self._update_date()
 
         self._my_industries_time_series.close_sql_data_base()
 
         self._my_sectors_time_series.close_sql_data_base()
+
+        self._my_file.make_copy_from_file()
 
 if __name__ == "__main__":
     my_time_series = MyTimeSeries('/Users/oliverrudow/PycharmProjects/Data', 'time_series_data_base.db')
