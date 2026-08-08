@@ -10,7 +10,7 @@ __copyright__: str = "Copyright 2026, Brain Center Höfen"
 
 import dataclasses
 import sqlite3
-from datetime import date
+from datetime import date, timedelta
 from mydatabase import mySQLDataBase, myTableSQL
 from mytimeseries import myUpdateManagerDefinitions
 
@@ -73,7 +73,8 @@ class MyTableSQLUpdateManager(myTableSQL.MyTableSQL):
         if not self._bool_sql_data_base_table:
 
             self.create_sql_data_base_table()
-            self.set_update_date()
+
+            self.set_update_date_initial()
 
     def _init_update_manager_columns(self) -> None:
 
@@ -88,7 +89,8 @@ class MyTableSQLUpdateManager(myTableSQL.MyTableSQL):
         _str_date = self._str_update_manager_date_column_name
 
         _str_text = (f'SELECT {self._str_update_manager_date_column_name} '
-                     f' FROM {self._str_sql_schema}.{self._str_table_name} ')
+                     f' FROM {self._str_sql_schema}.{self._str_table_name} '
+                     f' WHERE ROWID = 1')
 
         _list_result = 0
 
@@ -111,7 +113,7 @@ class MyTableSQLUpdateManager(myTableSQL.MyTableSQL):
 
             if _list_result.__len__() > 0:
 
-                _list_result =  _list_result[0][0]
+                _list_result =  _list_result[0]
 
             else:
 
@@ -123,7 +125,7 @@ class MyTableSQLUpdateManager(myTableSQL.MyTableSQL):
 
         _str_text = (f'UPDATE {self._str_sql_schema}.{self._str_table_name} '
                      f' SET {self._str_update_manager_date_column_name} = ? '
-                     f' WHERE id = ?')
+                     f' WHERE ROWID = ?')
 
         _data = (self._str_today_iso_format, 1)
 
@@ -141,6 +143,40 @@ class MyTableSQLUpdateManager(myTableSQL.MyTableSQL):
                       f'---- the Text {_str_text} has caused an Error {err} ! ----')
 
                 exit(1)
+
+    def check_update_time_series_permission(self) -> bool:
+
+        if self._str_today_iso_format > str(self.get_update_date()):
+
+            return True
+
+        else:
+
+            return False
+
+    def set_update_date_initial(self):
+
+        _data = (date.today() - timedelta(days=1)).isoformat()
+
+        _str_text = (f'INSERT '
+                     f'INTO {self._str_sql_schema}.{self._str_table_name} (ROWID, {self._str_update_manager_date_column_name}) '
+                     f'VALUES (1, "{_data}") ')
+
+        if self._my_sql_connection and self._my_sql_cursor:
+
+            try:
+
+                self._my_sql_cursor.execute(_str_text)
+
+                self._my_sql_connection.commit()
+
+            except sqlite3.OperationalError as err:
+
+                print(f'---- Operational Error in {__title__}, {self.set_update_date_initial.__name__} ----, \n'
+                      f'---- the Text {_str_text} has caused an Error {err} ! ----')
+
+                exit(1)
+
 
 if __name__ == "__main__":
     mySQLDB = mySQLDataBase.MySQLDataBase()

@@ -14,6 +14,9 @@ Since this package contains multiple files, here is a quick overview of how the 
 
 myTimeSeries/   
 ├── __init__.py.    
+├── myIndustriesTimeSeries.     
+├── myIndustriesTimeSeriesDefinitions.py.   
+├── myTableSQLIndustriesTimeSeries.py.  
 ├── mySectorsTimeSeries.py.                        
 ├── mySectorsTimeSeriesDefinitions.py.     
 ├── myTableSQLSectorsTimeSeries.py.           
