@@ -166,7 +166,7 @@ class MyIndustriesTimeSeries(mySQLDataBase.MySQLDataBase):
 
     def get_table_data(self) -> list:
 
-        return self._my_table_sql_industries_time_series.get_table_all_data()
+        return self._my_table_sql_industries_time_series.get_table_all_data_ordered()
 
     def get_table_data_plus_headline(self) -> list:
 

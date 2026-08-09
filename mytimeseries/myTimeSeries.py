@@ -126,6 +126,34 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
 
             self._my_sectors_time_series.update_change_percent()
 
+    def get_sector_table(self) -> list[tuple]:
+
+        _int_number_quotes: int = self._my_sectors_time_series.get_sum_quotes_all_sectors()
+
+        _float_average_change_percent: float = self._my_sectors_time_series.get_average_change_percent_all_sectors()
+
+        _tuple: tuple = ('Total', _int_number_quotes, _float_average_change_percent, '')
+
+        _list_table: list = self._my_sectors_time_series.get_table_data()
+
+        _list_table.insert(0, _tuple)
+
+        return _list_table
+
+    def get_industries_table(self) -> list[tuple]:
+
+        _int_number_quotes: int = self._my_industries_time_series.get_sum_quotes_all_industries()
+
+        _float_average_change_percent: float = self._my_industries_time_series.get_average_change_percent_all_industries()
+
+        _tuple: tuple = ('Total', _int_number_quotes, _float_average_change_percent, '')
+
+        _list_table: list =self._my_industries_time_series.get_table_data()
+
+        _list_table.insert(0, _tuple)
+
+        return _list_table
+
     def update_industries(self, list_industries: list) -> None:
 
         if self._bool_update_permission:
@@ -142,13 +170,11 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
 
             self._my_industries_time_series.update_change_percent()
 
-    def _update_date(self):
+    def update_date(self):
 
         self._my_table_sql_update_manager.set_update_date()
 
     def close_time_series(self):
-
-        self._update_date()
 
         self._my_industries_time_series.close_sql_data_base()
 
@@ -158,3 +184,4 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
 
 if __name__ == "__main__":
     my_time_series = MyTimeSeries('/Users/oliverrudow/PycharmProjects/Data', 'time_series_data_base.db')
+    print(my_time_series.get_sector_table())
