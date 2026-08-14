@@ -223,6 +223,33 @@ class MyTableSQLSectorsTimeSeries(myTableSQL.MyTableSQL):
 
                 exit(1)
 
+    def get_table_all_data_ordered(self) -> list:
+
+        list_result = []
+
+        str_text = (f'SELECT * FROM {self._str_sql_schema}.{self._str_table_name} '
+                    f'ORDER BY {self._str_sectors_time_series_change_percent_column_name} DESC')
+
+        if self._get_sql_alive:
+
+            try:
+
+                self._my_sql_cursor.execute(str_text)
+
+                list_result = self._my_sql_cursor.fetchall()
+
+                self._my_sql_connection.commit()
+
+            except sqlite3.OperationalError as err:
+
+                print(
+                    f'---- Operational Error in {__title__}, {self.get_table_all_data_ordered.__name__} ----, \n'
+                    f'---- the Text {str_text} has caused an Error {err} ! ----')
+
+                exit(1)
+
+        return list_result
+
     def get_global_average_change_percent(self) -> float:
 
         _str_change_percent_col = self._str_sectors_time_series_change_percent_column_name
