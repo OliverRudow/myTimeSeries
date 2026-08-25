@@ -1,6 +1,8 @@
 # myTimeSeries
 
-myTimeSeries is a package that holds the SQLite tables of several time series such as the quote sectors change in percent over time.
+The myTimeSeries package stores SQLite tables for various time series data. It tracks percentage changes 
+for sectors and industries over time, alongside dedicated time series for analyst, derivative, 
+fundamental, performance, and overall score values.
 
 # Installation
 
@@ -12,14 +14,17 @@ pip install mytimeseries
 
 Since this package contains multiple files, here is a quick overview of how the modules interact:
 
-myTimeSeries/   
+myTimeSeries/                   
 ├── __init__.py.    
 ├── myIndustriesTimeSeries.     
 ├── myIndustriesTimeSeriesDefinitions.py.   
 ├── myTableSQLIndustriesTimeSeries.py.  
 ├── mySectorsTimeSeries.py.                        
 ├── mySectorsTimeSeriesDefinitions.py.     
-├── myTableSQLSectorsTimeSeries.py.           
+├── myTableSQLSectorsTimeSeries.py.                             
+├── myScoresTimeSeries.py.                                      
+├── myScoresTimeSeriesDefinition.py.            
+├── my TableSQScoresTimeSeries.py.  
 
 
 ## Documentation & API
@@ -29,4 +34,7 @@ Link to your full documentation here (e.g., Read the Docs) or briefly describe t
 How can other developers help with the project? Briefly mention how to open issues or submit pull requests.
 
 ## License
-This project is licensed under the [MIT License](https://opensource.org).
+
+© 2026, Brain Center Höfen. All rights reserved.  
+**Author:** Oliver Rudow (<oliver.rudow@googlemail.com>)  
+**Version:** 0.1.0

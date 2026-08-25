@@ -15,6 +15,7 @@ from mydatabase import mySQLDataBase
 from myfilebase import myFileBase
 from mytimeseries import myIndustriesTimeSeriesDefinitions, myIndustriesTimeSeries, myTableSQLUpdateManager
 from mytimeseries import mySectorsTimeSeries
+from mytimeseries import myScoresTimeSeries
 
 STR_TARGET_DIRECTORY_FOR_SAFETY_COPY: str = '/Users/oliverrudow/Library/Mobile Documents/com~apple~CloudDocs/PycharmProjects/Data'
 
@@ -43,6 +44,10 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
     # Sector Time Series
     _my_sectors_time_series: mySectorsTimeSeries.MySectorsTimeSeries = (
         dataclasses.field(repr=False, default_factory=type(mySectorsTimeSeries.MySectorsTimeSeries)))
+
+    # Scores Time Series
+    _my_scores_time_series: myScoresTimeSeries.MyScoresTimeSeries = (
+        dataclasses.field(repr=False, default_factory=type(myScoresTimeSeries.MyScoresTimeSeries)))
 
     # Update Manager
     _my_table_sql_update_manager: myTableSQLUpdateManager.MyTableSQLUpdateManager = (
@@ -105,6 +110,9 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
         self._my_sectors_time_series = mySectorsTimeSeries.MySectorsTimeSeries(self._str_working_directory,
                                                                                self._str_data_base_file_name)
 
+        self._my_scores_time_series = myScoresTimeSeries.MyScoresTimeSeries(self._str_working_directory,
+                                                                            self._str_data_base_file_name)
+
         self._my_table_sql_update_manager = myTableSQLUpdateManager.MyTableSQLUpdateManager(self._my_sql_connection,
                                                                                 self._my_sql_cursor)
 
@@ -118,13 +126,19 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
 
             self._my_sectors_time_series.update_sectors()
 
-    def update_sectors_change_percent(self, list_change_percent: list[tuple]):
+    def update_sectors_change_percent(self, list_change_percent: list[tuple]) -> None:
 
         if self._bool_update_permission:
 
             self._my_sectors_time_series.set_list_sector_percent_changes_tuples(list_change_percent)
 
             self._my_sectors_time_series.update_change_percent()
+
+    def update_scores(self) -> None:
+
+        if self._bool_update_permission:
+
+            self._my_scores_time_series.update_all_score_values()
 
     def get_sector_table(self) -> list[tuple]:
 
@@ -179,6 +193,8 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
         self._my_industries_time_series.close_sql_data_base()
 
         self._my_sectors_time_series.close_sql_data_base()
+
+        self._my_scores_time_series.close_sql_data_base()
 
         self._my_file.make_copy_from_file()
 
