@@ -10,6 +10,7 @@ __copyright__: str = "Copyright 2026, Brain Center Höfen"
 
 import dataclasses
 import sqlite3
+from ast import literal_eval
 from mydatabase import mySQLDataBase, myTableSQL
 from mytimeseries import myScoresTimeSeriesDefinitions
 from mysharesdefinition import myRankingWatchListDefinitions
@@ -545,6 +546,58 @@ class MyTableSQLScoresTimeSeries(myTableSQL.MyTableSQL):
                 except sqlite3.OperationalError:
 
                     pass  # Verhindert Absturz, falls DETACH fehlschlägt, weil ATTACH schon fehlschlug
+
+    def get_score_lists_per_isin(self, str_isin: str) -> list:
+
+        str_quote_isin = self._str_scores_time_series_quote_isin_column_name
+        str_analyst_array_col = self._str_scores_time_series_analyst_score_column_name
+        str_derivate_array_col = self._str_scores_time_series_derivate_score_column_name
+        str_fundamentals_array_col = self._str_scores_time_series_fundamentals_score_column_name
+        str_performance_array_col = self._str_scores_time_series_performance_score_column_name
+        str_overall_array_col = self._str_scores_time_series_overall_score_column_name
+
+        str_text = (f'SELECT {str_analyst_array_col}, {str_derivate_array_col}, {str_fundamentals_array_col}, '
+                    f'{str_performance_array_col}, {str_overall_array_col} '
+                    f'FROM {self._str_sql_schema}.{self._str_table_name} WHERE {str_quote_isin} = "{str_isin}" ')
+
+        result = []
+
+        if self._my_sql_connection and self._my_sql_cursor:
+
+            try:
+
+                self._my_sql_cursor.execute(str_text)
+
+                list_result = self._my_sql_cursor.fetchone()
+
+                # 5. Nur EIN Commit nach allen Updates (enormer Geschwindigkeitsvorteil)
+                self._my_sql_connection.commit()
+
+                if list_result.__len__() > 0:
+
+                    list_result = list(list_result)
+
+                    for elem in list_result:
+
+                        if isinstance(elem, str):
+
+                            result.append(literal_eval(elem))
+
+                        else:
+
+                            result.append(elem)
+
+            except sqlite3.OperationalError as err:
+
+                print(
+                    f'---- Operational Error in {__title__}, {self.get_score_lists_per_isin.__name__} ----\n'
+                    f'---- An error occurred during database operations: {err} ----'
+                )
+
+                exit(1)
+
+        return result
+
 
 if __name__ == "__main__":
     mySQLDB = mySQLDataBase.MySQLDataBase()

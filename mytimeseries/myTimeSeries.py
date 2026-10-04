@@ -1,7 +1,7 @@
 """myTimeSeries.py."""
 
 __title__: str = "myTimeSeries"
-__version__: str = "0.1.0"
+__version__: str = "0.2.0"
 __author__: str = "Oliver Rudow"
 __email__: str = "oliver.rudow@googlemail.com"
 __copyright__: str = "Copyright 2026, Brain Center Höfen"
@@ -200,4 +200,5 @@ class MyTimeSeries(mySQLDataBase.MySQLDataBase):
 
 if __name__ == "__main__":
     my_time_series = MyTimeSeries('/Users/oliverrudow/PycharmProjects/Data', 'time_series_data_base.db')
+    my_time_series.update_scores()
     print(my_time_series.get_sector_table())

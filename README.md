@@ -37,4 +37,4 @@ How can other developers help with the project? Briefly mention how to open issu
 
 © 2026, Brain Center Höfen. All rights reserved.  
 **Author:** Oliver Rudow (<oliver.rudow@googlemail.com>)  
-**Version:** 0.1.0
+**Version:** 0.2.0

@@ -1,7 +1,7 @@
 """myScoresTimeSeries.py."""
 
 __title__: str = "myScoresTimeSeries"
-__version__: str = "0.1.0"
+__version__: str = "0.2.0"
 __author__: str = "Oliver Rudow"
 __email__: str = "oliver.rudow@googlemail.com"
 __copyright__: str = "Copyright 2026, Brain Center Höfen"
@@ -102,11 +102,11 @@ class MyScoresTimeSeries(mySQLDataBase.MySQLDataBase):
         # Open SQL DataBase
         self.open_sql_data_base()
 
-        self._my_table_sql_sectors_time_series = myTableSQLScoresTimeSeries.MyTableSQLScoresTimeSeries(
+        self._my_table_sql_scores_time_series = myTableSQLScoresTimeSeries.MyTableSQLScoresTimeSeries(
             self._my_sql_connection,
             self._my_sql_cursor)
 
-        self._list_column_names =  self._my_table_sql_sectors_time_series.get_column_names()
+        self._list_column_names =  self._my_table_sql_scores_time_series.get_column_names()
 
         if self._list_column_names.__len__() == 0:
 
@@ -179,19 +179,19 @@ class MyScoresTimeSeries(mySQLDataBase.MySQLDataBase):
 
     def update_all_score_values(self) -> None:
 
-        self._my_table_sql_sectors_time_series.update_analyst_score_values(self._str_ranking_data_base_file_name,
+        self._my_table_sql_scores_time_series.update_analyst_score_values(self._str_ranking_data_base_file_name,
                                                                            self._ranking_table_name)
 
-        self._my_table_sql_sectors_time_series.update_derivate_score_values(self._str_ranking_data_base_file_name,
+        self._my_table_sql_scores_time_series.update_derivate_score_values(self._str_ranking_data_base_file_name,
                                                                            self._ranking_table_name)
 
-        self._my_table_sql_sectors_time_series.update_fundamental_score_values(self._str_ranking_data_base_file_name,
+        self._my_table_sql_scores_time_series.update_fundamental_score_values(self._str_ranking_data_base_file_name,
                                                                             self._ranking_table_name)
 
-        self._my_table_sql_sectors_time_series.update_performance_score_values(self._str_ranking_data_base_file_name,
+        self._my_table_sql_scores_time_series.update_performance_score_values(self._str_ranking_data_base_file_name,
                                                                                self._ranking_table_name)
 
-        self._my_table_sql_sectors_time_series.update_overall_score_values(self._str_ranking_data_base_file_name,
+        self._my_table_sql_scores_time_series.update_overall_score_values(self._str_ranking_data_base_file_name,
                                                                                self._ranking_table_name)
 
     def set_working_directory(self, str_working_directory: str) -> None:
@@ -227,11 +227,16 @@ class MyScoresTimeSeries(mySQLDataBase.MySQLDataBase):
             print(e)
             exit(1)
 
+    def get_score_lists_per_isin(self, str_isin: str) -> list:
+
+        return self._my_table_sql_scores_time_series.get_score_lists_per_isin(str_isin)
+
 
 if __name__ == "__main__":
     my_scores_time_series = MyScoresTimeSeries('/Users/oliverrudow/PycharmProjects/Data', 'time_series_data_base.db')
-    my_scores_time_series.update_all_score_values()
+    # my_scores_time_series.update_all_score_values()
     # my_sector_time_series.update_sectors()
     # print(my_sector_time_series.get_average_change_percent_all_sectors())
     # print(my_sector_time_series.get_sum_quotes_all_sectors())
+    print(my_scores_time_series.get_score_lists_per_isin('DE000A2NB601'))
     my_scores_time_series.close_sql_data_base()
